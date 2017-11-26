@@ -7,7 +7,7 @@
 </head>
 
 <body onload="init();">
-    <canvas id="canvas" width="10" height="10"></canvas>
+    <canvas id="canvas"></canvas>
 </body>
 <script type="text/javascript" src="libs/Box2D.js"></script>
 <script type="text/javascript">
@@ -29,15 +29,10 @@
             ;
 
     function init() {
-        resize();
-
         world = new b2World(
             new b2Vec2(0, 10)    //gravity
             , true                 //allow sleep
         );
-
-        //create ground  
-        createGround(10);
 
         var bodyDef = new Box2D.Dynamics.b2BodyDef;
 
@@ -71,6 +66,8 @@
         world.SetDebugDraw(debugDraw);
 
         window.setInterval(update, 1000 / 60);
+
+        resize();   
     };
 
     function update() {
@@ -88,7 +85,7 @@
         world.ClearForces();
     };
 
-    function createGround(y)
+    function createGround(x, y)
     {        
         if(actualBody != undefined)
         {
@@ -100,10 +97,10 @@
         fixDef.restitution = 0.2;
         var fixBodyDef = new b2BodyDef;
         fixBodyDef.type = Box2D.Dynamics.b2Body.b2_staticBody;
-        fixBodyDef.position.x = 10;
+        fixBodyDef.position.x = x/2;
         fixBodyDef.position.y = y;
         fixDef.shape = new b2PolygonShape;
-        fixDef.shape.SetAsOrientedBox(10, 0.1, new b2Vec2(), .01);
+        fixDef.shape.SetAsOrientedBox(x, 1, new b2Vec2(), .01);
         actualBody = world.CreateBody(fixBodyDef);
         actualBody.CreateFixture(fixDef);
     }
@@ -123,10 +120,8 @@
         canvas.height = height;
 
         // also dumy you gotta move the ground
-        if (actualBody != undefined) {
-            scale = debugDraw.GetDrawScale();
-            createGround(height / scale);
-        }
+        scale = debugDraw.GetDrawScale();
+        createGround(width / scale, height / scale);
     }
 
     window.addEventListener('resize', resize, false);
