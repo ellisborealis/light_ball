@@ -15,6 +15,8 @@
     var debugDraw;
     var actualBody;
     var destroyThese = [];
+    var objects = [];
+    var oldWidth, oldHeight;
 
         var b2Vec2 = Box2D.Common.Math.b2Vec2
             , b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -53,7 +55,9 @@
             }
             bodyDef.position.x = Math.random() * 10;
             bodyDef.position.y = Math.random() * 10;
-            world.CreateBody(bodyDef).CreateFixture(fixDef);
+            var body = world.CreateBody(bodyDef);
+            body.CreateFixture(fixDef);
+            objects.push(body);
         }
 
         //setup debug draw
@@ -106,6 +110,8 @@
     }
 
     function resize() {
+        scale = debugDraw.GetDrawScale();
+
         // Our canvas must cover full height of screen
         // regardless of the resolution
         var height = window.innerHeight;
@@ -119,8 +125,21 @@
         canvas.width = width;
         canvas.height = height;
 
+        if(oldWidth != undefined && oldHeight != undefined)
+        {
+            difference = (oldHeight - height) / scale;
+            for(var o in objects)
+            {
+                oldX = objects[o].GetPosition().x;
+                oldY = objects[o].GetPosition().y;
+                objects[o].SetPosition(new b2Vec2(oldX, oldY-difference));
+            }
+        }
+
+        oldWidth = width;
+        oldHeight = height;
+
         // also dumy you gotta move the ground
-        scale = debugDraw.GetDrawScale();
         createGround(width / scale, height / scale);
     }
 
