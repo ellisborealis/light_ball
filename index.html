@@ -17,6 +17,7 @@
     var destroyThese = [];
     var objects = [];
     var oldWidth, oldHeight;
+    var difference = 0.0;
 
         var b2Vec2 = Box2D.Common.Math.b2Vec2
             , b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -79,6 +80,16 @@
         {
             world.DestroyBody(destroyThese[d]);
         }
+        if(difference != 0.0)
+        {
+            for(var o in objects)
+            {
+                oldX = objects[o].GetPosition().x;
+                oldY = objects[o].GetPosition().y;
+                objects[o].SetPosition(new b2Vec2(oldX, oldY-difference));
+            }
+            difference = 0.0;
+        }
         destroyThese = [];
         world.Step(
             1 / 60   //frame-rate
@@ -127,13 +138,7 @@
 
         if(oldWidth != undefined && oldHeight != undefined)
         {
-            difference = (oldHeight - height) / scale;
-            for(var o in objects)
-            {
-                oldX = objects[o].GetPosition().x;
-                oldY = objects[o].GetPosition().y;
-                objects[o].SetPosition(new b2Vec2(oldX, oldY-difference));
-            }
+            difference += (oldHeight - height) / scale;
         }
 
         oldWidth = width;
