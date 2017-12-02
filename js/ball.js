@@ -12,9 +12,9 @@ function drawObject()
     
     var context = canvas1.getContext('2d');
     
-    // context.beginPath();
-    // context.arc(pos.x * this.scaling, pos.y * this.scaling, radius * this.scaling, 0, 2 * Math.PI, false);
-    // context.fillStyle = 'green';
-    // context.fill();
-    // context.closePath();
+    context.beginPath();
+    context.arc(pos.x * this.scaling, pos.y * this.scaling, radius * this.scaling, 0, 2 * Math.PI, false);
+    context.fillStyle = 'green';
+    context.fill();
+    context.closePath();
 }
