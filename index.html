@@ -16,7 +16,6 @@
     var world;
     var debugDraw;
     var actualBody;
-    var destroyThese = [];
     var objects = [];
     var oldWidth, oldHeight;
     var difference = 0.0;
@@ -24,6 +23,8 @@
     var otherObjects = [];
     var canvas1 = document.getElementById("layer1");
     var canvas2 = document.getElementById("layer2");
+    var context1 = canvas1.getContext('2d');;
+    var context2 = canvas2.getContext('2d');;
 
         var b2Vec2 = Box2D.Common.Math.b2Vec2
             , b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -52,7 +53,7 @@
         //create some objects
         bodyDef.type = b2Body.b2_dynamicBody;
         var body;
-        for (var i = 0; i < 10; ++i) {
+        for (var i = 0; i < 100; ++i) {
             // if (Math.random() > 0.5) {
             //     fixDef.shape = new b2PolygonShape;
             //     fixDef.shape.SetAsBox(
@@ -90,32 +91,16 @@
 
         window.setInterval(update, 1000 / 60);
 
-        resize();   
+        var size = resize();
+
+        // also dumy you gotta move the ground
+        createGround(size.width, size.height);
     };
 
-    function update() {
-        for(var d in destroyThese)
-        {
-            world.DestroyBody(destroyThese[d]);
-        }
-        if(difference != 0.0)
-        {
-            if(difference > 0)
-            {
-                for(var o in objects)
-                {
-                    oldX = objects[o].GetPosition().x;
-                    oldY = objects[o].GetPosition().y;
-                    objects[o].SetPosition(new b2Vec2(oldX, oldY-difference));
-                }
-            }
-            difference = 0.0;
-        }
-        
-        var context = canvas1.getContext('2d');
-        context.clearRect(0, 0, canvas1.width, canvas1.height);
-        context = canvas2.getContext('2d');
-        context.clearRect(0, 0, canvas2.width, canvas2.height);
+    function update()
+     {
+        context1.clearRect(0, 0, canvas1.width, canvas1.height);
+        context2.clearRect(0, 0, canvas2.width, canvas2.height);
 
         for(var l in lightBalls)
         {
@@ -125,22 +110,17 @@
         {
             otherObjects[o].drawObject();
         }
-        destroyThese = [];
         world.Step(
             1 / 60   //frame-rate
-            , 10       //velocity iterations
-            , 10       //position iterations
+            , 1       //velocity iterations
+            , 1       //position iterations
         );
-        world.DrawDebugData();
+        //world.DrawDebugData();
         world.ClearForces();
     };
 
     function createGround(x, y)
-    {        
-        if(actualBody != undefined)
-        {
-            destroyThese.push(actualBody);
-        }
+    {
         var fixDef = new b2FixtureDef;
         fixDef.density = 1.0;
         fixDef.friction = 0.5;
@@ -174,8 +154,7 @@
         oldWidth = width;
         oldHeight = height;
 
-        // also dumy you gotta move the ground
-        createGround(width / scale, height / scale);
+        return {'width': width / scale, 'height': height / scale};
     }
 
     window.addEventListener('resize', resize, false);

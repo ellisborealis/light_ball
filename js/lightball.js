@@ -9,8 +9,6 @@ function drawLightObject()
 {
     pos = this.box.GetPosition();
     m_radius = this.box.GetFixtureList().GetShape().m_radius;
-    
-    var context = canvas2.getContext('2d');
 
     var lightRadius = window.innerHeight;//20 * m_radius * this.scaling;
     var actualRadius = m_radius * this.scaling;
@@ -18,15 +16,15 @@ function drawLightObject()
     var yPos = pos.y * this.scaling;
     
     // draw light
-    context.beginPath();
-    context.moveTo(xPos, yPos);
-    context.arc(xPos, yPos, lightRadius, 0, 2 * Math.PI, false);
+    context2.beginPath();
+    context2.moveTo(xPos, yPos);
+    context2.arc(xPos, yPos, lightRadius, 0, 2 * Math.PI, false);
     
-    context.fillStyle = '#fff';
-    context.fill();
-    context.closePath();
+    context2.fillStyle = '#fff';
+    context2.fill();
+    context2.closePath();
 
-    context.beginPath();
+    context2.beginPath();
     for(var o in otherObjects)
     {
         var oPos = otherObjects[o].box.GetPosition();
@@ -39,14 +37,14 @@ function drawLightObject()
         if(distance < (lightRadius + oRad))
         {   
             var startPoint = Math.atan(b/a) + (Math.PI / 2);
-            // context.moveTo(xPosO, yPosO);
+            // context2.moveTo(xPosO, yPosO);
             // if(a <= 0)   
             // {
-            //     context.arc(xPosO, yPosO, oRad, startPoint, startPoint + Math.PI, true);
+            //     context2.arc(xPosO, yPosO, oRad, startPoint, startPoint + Math.PI, true);
             // }
             // else
             // {
-            //     context.arc(xPosO, yPosO, oRad, startPoint - Math.PI, startPoint, true);
+            //     context2.arc(xPosO, yPosO, oRad, startPoint - Math.PI, startPoint, true);
             // }
             var offset = (Math.PI / 8) * (1 - ((distance - oRad) / (lightRadius - actualRadius)));//((2 * Math.PI)/ 360);(Math.PI / 2) * (1-Math.sqrt(distance / lightRadius))
             if(a > 0)
@@ -83,33 +81,33 @@ function drawLightObject()
             
             if(a <= 0)
             {
-                context.moveTo(point4x, point4y);
-                context.lineTo(point3x, point3y);
-                context.lineTo(point1x, point1y);
-                context.lineTo(point2x, point2y);
-                context.lineTo(point4x, point4y);
+                context2.moveTo(point4x, point4y);
+                context2.lineTo(point3x, point3y);
+                context2.lineTo(point1x, point1y);
+                context2.lineTo(point2x, point2y);
+                context2.lineTo(point4x, point4y);
             }
             else
             {
-                context.moveTo(point3x, point3y);
-                context.lineTo(point4x, point4y);
-                context.lineTo(point2x, point2y);
-                context.lineTo(point1x, point1y);
-                context.lineTo(point3x, point3y);
+                context2.moveTo(point3x, point3y);
+                context2.lineTo(point4x, point4y);
+                context2.lineTo(point2x, point2y);
+                context2.lineTo(point1x, point1y);
+                context2.lineTo(point3x, point3y);
             }
         }
     }
-    context.fillStyle = 'rgb(179, 178, 178)';
-    context.fill();
-    context.closePath();
+    context2.fillStyle = 'rgb(179, 178, 178)';
+    context2.fill();
+    context2.closePath();
 
     // draw center ball
-    context.beginPath();
-    context.arc(xPos, yPos, m_radius * this.scaling, 0, 2 * Math.PI, false);
-    context.fillStyle = '#fff';
-    context.fill();
-    context.lineWidth = 1;
-    context.strokeStyle = '#003300';
-    context.stroke();
-    context.closePath();
+    context2.beginPath();
+    context2.arc(xPos, yPos, m_radius * this.scaling, 0, 2 * Math.PI, false);
+    context2.fillStyle = '#fff';
+    context2.fill();
+    context2.lineWidth = 1;
+    context2.strokeStyle = '#003300';
+    context2.stroke();
+    context2.closePath();
 }

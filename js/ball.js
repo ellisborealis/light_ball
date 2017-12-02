@@ -10,11 +10,9 @@ function drawObject()
     pos = this.box.GetPosition();
     radius = this.box.GetFixtureList().GetShape().m_radius;
     
-    var context = canvas1.getContext('2d');
-    
-    context.beginPath();
-    context.arc(pos.x * this.scaling, pos.y * this.scaling, radius * this.scaling, 0, 2 * Math.PI, false);
-    context.fillStyle = 'green';
-    context.fill();
-    context.closePath();
+    context1.beginPath();
+    context1.arc(pos.x * this.scaling, pos.y * this.scaling, radius * this.scaling, 0, 2 * Math.PI, false);
+    context1.fillStyle = 'green';
+    context1.fill();
+    context1.closePath();
 }
