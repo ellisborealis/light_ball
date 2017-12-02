@@ -39,16 +39,16 @@ function drawLightObject()
         if(distance < (lightRadius + oRad))
         {   
             var startPoint = Math.atan(b/a) + (Math.PI / 2);
-            context.moveTo(xPosO, yPosO);
-            if(a <= 0)   
-            {
-                context.arc(xPosO, yPosO, oRad, startPoint, startPoint + Math.PI, true);
-            }
-            else
-            {
-                context.arc(xPosO, yPosO, oRad, startPoint - Math.PI, startPoint, true);
-            }
-            var offset = Math.PI / 4 - ((Math.PI / 4) * Math.sqrt(distance / lightRadius));//((2 * Math.PI)/ 360);(Math.PI / 2) * (1-Math.sqrt(distance / lightRadius))
+            // context.moveTo(xPosO, yPosO);
+            // if(a <= 0)   
+            // {
+            //     context.arc(xPosO, yPosO, oRad, startPoint, startPoint + Math.PI, true);
+            // }
+            // else
+            // {
+            //     context.arc(xPosO, yPosO, oRad, startPoint - Math.PI, startPoint, true);
+            // }
+            var offset = (Math.PI / 8) * (1 - ((distance - oRad) / (lightRadius - actualRadius)));//((2 * Math.PI)/ 360);(Math.PI / 2) * (1-Math.sqrt(distance / lightRadius))
             if(a > 0)
             {
                 offset = -offset;
@@ -58,25 +58,27 @@ function drawLightObject()
             var point2x = xPosO + (oRad * Math.cos(startPoint + Math.PI + offset));
             var point2y = yPosO + (oRad * Math.sin(startPoint + Math.PI + offset));
             // now go from point x to point y
+            var angle1 = Math.atan((point1y-yPos)/(point1x-xPos));
+            var angle2 = Math.atan((point2y-yPos)/(point2x-xPos));
             if(point1x-xPos > 0)
             {
-                var point3x = point1x + (2 * lightRadius * Math.cos(Math.atan((point1y-yPos)/(point1x-xPos))))
-                var point3y = point1y + (2 * lightRadius * Math.sin(Math.atan((point1y-yPos)/(point1x-xPos))))
+                var point3x = point1x + (2 * lightRadius * Math.cos(angle1))
+                var point3y = point1y + (2 * lightRadius * Math.sin(angle1))
             }
             else
             {
-                var point3x = point1x - (2 * lightRadius * Math.cos(Math.atan((point1y-yPos)/(point1x-xPos))))
-                var point3y = point1y - (2 * lightRadius * Math.sin(Math.atan((point1y-yPos)/(point1x-xPos))))
+                var point3x = point1x - (2 * lightRadius * Math.cos(angle1))
+                var point3y = point1y - (2 * lightRadius * Math.sin(angle1))
             }
             if(point2x-xPos > 0)
             {
-                var point4x = point2x + (2 * lightRadius * Math.cos(Math.atan((point2y-yPos)/(point2x-xPos))))
-                var point4y = point2y + (2 * lightRadius * Math.sin(Math.atan((point2y-yPos)/(point2x-xPos))))
+                var point4x = point2x + (2 * lightRadius * Math.cos(angle2))
+                var point4y = point2y + (2 * lightRadius * Math.sin(angle2))
             }
             else
             {
-                var point4x = point2x - (2 * lightRadius * Math.cos(Math.atan((point2y-yPos)/(point2x-xPos))))
-                var point4y = point2y - (2 * lightRadius * Math.sin(Math.atan((point2y-yPos)/(point2x-xPos))))
+                var point4x = point2x - (2 * lightRadius * Math.cos(angle2))
+                var point4y = point2y - (2 * lightRadius * Math.sin(angle2))
             }
             
             if(a <= 0)
