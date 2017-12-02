@@ -21,6 +21,7 @@
     var oldWidth, oldHeight;
     var difference = 0.0;
     var lightBalls = [];
+    var otherObjects = [];
     var canvas1 = document.getElementById("layer1");
     var canvas2 = document.getElementById("layer2");
 
@@ -68,9 +69,15 @@
             body = world.CreateBody(bodyDef);
             body.CreateFixture(fixDef);
             objects.push(body);
-            lightBalls.push(new Ball(body, 30));
+            if(i == 0)
+            {
+                lightBalls.push(new LightBall(body, 30));
+            }
+            else
+            {
+                otherObjects.push(new Ball(body, 30));
+            }
         }
-        lightBalls.push(new LightBall(body, 30));
 
         //setup debug draw
         // debugDraw = new b2DebugDraw();
@@ -113,6 +120,10 @@
         for(var l in lightBalls)
         {
             lightBalls[l].drawObject();
+        }
+        for(var o in otherObjects)
+        {
+            otherObjects[o].drawObject();
         }
         destroyThese = [];
         world.Step(
